@@ -59,7 +59,7 @@ function CreatePost() {
     <View className="mt-4">
       <TextInput
         className="mb-2 rounded bg-white/10 p-2 text-zinc-200"
-        placeholderTextColor="#A1A1A9"
+        placeholderTextColor="#A1A1A9" // zinc-400
         value={title}
         onChangeText={setTitle}
         placeholder="Title"
@@ -71,7 +71,7 @@ function CreatePost() {
       )}
       <TextInput
         className="mb-2 rounded bg-white/10 p-2 text-zinc-200"
-        placeholderTextColor="#A1A1A9"
+        placeholderTextColor="#A1A1A9" // zinc-400
         value={content}
         onChangeText={setContent}
         placeholder="Content"
