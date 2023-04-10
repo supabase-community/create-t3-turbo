@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 
-import { HeaderBackButton } from "../components/header";
+import { HeaderBackButton, HeaderTitle } from "../components/header";
 import { TRPCProvider } from "../utils/api";
 import { supabase } from "../utils/supabase";
 
@@ -20,10 +20,11 @@ export default function RootLayout() {
            */}
           <Stack
             screenOptions={{
-              headerLeft: () => <HeaderBackButton />,
+              headerLeft: HeaderBackButton,
               headerStyle: {
                 backgroundColor: "#18181A",
               },
+              headerTitle: HeaderTitle,
             }}
           >
             {/*

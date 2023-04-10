@@ -1,4 +1,5 @@
-import { TouchableOpacity } from "react-native";
+import { type ReactNode } from "react";
+import { Text, TouchableOpacity } from "react-native";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { Entypo, Ionicons } from "@expo/vector-icons";
@@ -22,11 +23,19 @@ export function AuthAvatar() {
   );
 }
 
-export const HeaderBackButton = () => {
+export function HeaderBackButton() {
   const router = useRouter();
   return (
     <TouchableOpacity onPress={() => router.back()}>
       <Ionicons name="arrow-back" size={32} color="#E4E4E7" />
     </TouchableOpacity>
   );
-};
+}
+
+export function HeaderTitle(props: { children: ReactNode }) {
+  return (
+    <Text className="text-3xl font-semibold text-zinc-200">
+      {props.children}
+    </Text>
+  );
+}
