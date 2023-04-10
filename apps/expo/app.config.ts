@@ -1,8 +1,7 @@
 import type { ExpoConfig } from "@expo/config";
 
-// FIXME: Use environment variables in Expo SDK 49
-const SUPABASE_URL = "";
-const SUPABASE_ANON_KEY = "";
+const SUPABASE_URL = "https://YOUR_PROJECT_REF.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR_ANON_KEY";
 if (typeof SUPABASE_URL !== "string" || typeof SUPABASE_ANON_KEY !== "string") {
   throw new Error("Missing Supabase URL or anonymous key");
 }
