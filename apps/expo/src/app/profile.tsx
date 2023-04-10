@@ -51,7 +51,7 @@ function SignedOutView() {
         cornerRadius={8}
         onPress={async () => {
           try {
-            const credential = await AppleAuthentication.signInAsync({
+            const _credential = await AppleAuthentication.signInAsync({
               requestedScopes: [
                 AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
                 AppleAuthentication.AppleAuthenticationScope.EMAIL,
