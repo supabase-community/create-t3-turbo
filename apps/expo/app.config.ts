@@ -15,7 +15,7 @@ const defineConfig = (): ExpoConfig => ({
   version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/icon.png",
-  userInterfaceStyle: "light",
+  userInterfaceStyle: "dark",
   splash: {
     image: "./assets/icon.png",
     resizeMode: "contain",

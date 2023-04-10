@@ -50,7 +50,9 @@ const RootLayout = () => {
                 backgroundColor: "#18181A",
               },
             }}
-          />
+          >
+            <Stack.Screen name="profile" options={{ presentation: "modal" }} />
+          </Stack>
           <StatusBar />
         </SafeAreaProvider>
       </TRPCProvider>
