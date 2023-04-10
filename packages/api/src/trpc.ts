@@ -9,7 +9,7 @@
 
 import {
   createServerSupabaseClient,
-  type Session,
+  type User,
 } from "@supabase/auth-helpers-nextjs";
 import { TRPCError, initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
@@ -23,12 +23,12 @@ import { prisma } from "@acme/db";
  *
  * This section defines the "contexts" that are available in the backend API
  *
- * These allow you to access things like the database, the session, etc, when
+ * These allow you to access things like the database, the user, etc, when
  * processing a request
  *
  */
 type CreateContextOptions = {
-  session: Session | null;
+  user: User | null;
 };
 
 /**
@@ -42,7 +42,7 @@ type CreateContextOptions = {
  */
 export const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
-    session: opts.session,
+    user: opts.user,
     prisma,
   };
 };
@@ -55,18 +55,16 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const supabase = createServerSupabaseClient(opts);
 
-  const authHeader = opts.req.headers.authorization;
-  const token = authHeader?.match(/^Bearer (.*)$/)?.[1];
+  // React Native will pass their token through headers,
+  // browsers will have the session cookie set
+  const token = opts.req.headers.authorization;
 
-  console.log("Server got token:", token);
-
-  const session = authHeader
-    ? await supabase.auth.getUser(token) // dont think this will work
-    : await supabase.auth.getSession();
+  const user = token
+    ? await supabase.auth.getUser(token)
+    : await supabase.auth.getUser();
 
   return createInnerTRPCContext({
-    // @ts-expect-error - FIXME: make isomorphic depending on token / session
-    session: session?.data?.session,
+    user: user.data.user,
   });
 };
 
@@ -117,14 +115,13 @@ export const publicProcedure = t.procedure;
  * procedure
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session?.user.id) {
+  if (!ctx.user?.id) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
-      // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
-      user: ctx.session.user,
+      // infers the `user` as non-nullable
+      user: ctx.user,
     },
   });
 });

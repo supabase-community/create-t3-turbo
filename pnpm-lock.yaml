@@ -61,6 +61,9 @@ importers:
       expo:
         specifier: ^48.0.10
         version: 48.0.10(@babel/core@7.21.4)
+      expo-apple-authentication:
+        specifier: ~6.0.1
+        version: 6.0.1(expo@48.0.10)
       expo-constants:
         specifier: ~14.2.1
         version: 14.2.1(expo@48.0.10)
@@ -5174,6 +5177,14 @@ packages:
       to-regex: 3.0.2
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /expo-apple-authentication@6.0.1(expo@48.0.10):
+    resolution: {integrity: sha512-Vp7HzSdUJj9lC6rJokJjDU1BBA3EgZMEzoQJpI8Kjck4/5BXlOhlKMxqk4zUoPEqZ/hhj5DgqMhM3IeNm46mag==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      expo: 48.0.10(@babel/core@7.21.4)
     dev: false
 
   /expo-application@5.1.1(expo@48.0.10):

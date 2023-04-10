@@ -9,15 +9,15 @@ import { supabase } from "../utils/supabase";
 
 // This is the main layout of the app
 // It wraps your pages with the providers they need
-const RootLayout = () => {
+export default function RootLayout() {
   return (
     <SessionContextProvider supabaseClient={supabase}>
       <TRPCProvider>
         <SafeAreaProvider>
           {/*
-            The Stack component displays the current page.
-            It also allows you to configure your screens 
-          */}
+           * The Stack component displays the current page.
+           * It also allows you to configure your screens
+           */}
           <Stack
             screenOptions={{
               headerLeft: () => <HeaderBackButton />,
@@ -26,6 +26,10 @@ const RootLayout = () => {
               },
             }}
           >
+            {/*
+             * Present the profile screen as a modal
+             * @see https://expo.github.io/router/docs/guides/modals
+             */}
             <Stack.Screen
               name="profile"
               options={{
@@ -39,6 +43,4 @@ const RootLayout = () => {
       </TRPCProvider>
     </SessionContextProvider>
   );
-};
-
-export default RootLayout;
+}

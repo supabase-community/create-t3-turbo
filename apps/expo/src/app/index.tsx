@@ -8,11 +8,12 @@ import { FlashList } from "@shopify/flash-list";
 import { AuthAvatar } from "../components/header";
 import { api, type RouterOutputs } from "../utils/api";
 
-const PostCard: React.FC<{
+function PostCard(props: {
   post: RouterOutputs["post"]["all"][number];
   onDelete: () => void;
-}> = ({ post, onDelete }) => {
+}) {
   const router = useRouter();
+  const { post } = props;
 
   return (
     <View className="flex flex-row rounded-lg bg-white/10 p-4">
@@ -33,14 +34,14 @@ const PostCard: React.FC<{
           </View>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={onDelete}>
+      <TouchableOpacity onPress={props.onDelete}>
         <Text className="font-bold uppercase text-emerald-400">Delete</Text>
       </TouchableOpacity>
     </View>
   );
-};
+}
 
-const CreatePost: React.FC = () => {
+function CreatePost() {
   const utils = api.useContext();
 
   const [title, setTitle] = React.useState("");
@@ -98,9 +99,9 @@ const CreatePost: React.FC = () => {
       )}
     </View>
   );
-};
+}
 
-const Index = () => {
+export default function HomeScreen() {
   const utils = api.useContext();
 
   const postQuery = api.post.all.useQuery();
@@ -147,6 +148,4 @@ const Index = () => {
       </View>
     </SafeAreaView>
   );
-};
-
-export default Index;
+}

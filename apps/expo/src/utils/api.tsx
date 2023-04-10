@@ -55,7 +55,7 @@ export const TRPCProvider: React.FC<{ children: React.ReactNode }> = ({
           url: `${getBaseUrl()}/api/trpc`,
           headers: () => {
             const token = session?.access_token;
-            return { Authorization: `Bearer ${token}` };
+            return { Authorization: token };
           },
         }),
       ],

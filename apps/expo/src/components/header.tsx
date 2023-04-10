@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import { useUser } from "@supabase/auth-helpers-react";
 
-export const AuthAvatar = () => {
+export function AuthAvatar() {
   const user = useUser();
   const router = useRouter();
 
@@ -20,7 +20,7 @@ export const AuthAvatar = () => {
       {!user && <Entypo name="login" size={32} color="#E4E4E7" />}
     </TouchableOpacity>
   );
-};
+}
 
 export const HeaderBackButton = () => {
   const router = useRouter();
