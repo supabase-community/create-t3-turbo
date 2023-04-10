@@ -51,7 +51,13 @@ const RootLayout = () => {
               },
             }}
           >
-            <Stack.Screen name="profile" options={{ presentation: "modal" }} />
+            <Stack.Screen
+              name="profile"
+              options={{
+                presentation: "modal",
+                headerTitle: () => <></>,
+              }}
+            />
           </Stack>
           <StatusBar />
         </SafeAreaProvider>
