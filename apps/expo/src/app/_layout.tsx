@@ -21,10 +21,10 @@ export default function RootLayout() {
           <Stack
             screenOptions={{
               headerLeft: HeaderBackButton,
+              headerTitle: HeaderTitle,
               headerStyle: {
                 backgroundColor: "#18181A",
               },
-              headerTitle: HeaderTitle,
             }}
           >
             {/*
