@@ -11,11 +11,21 @@ const Post: React.FC = () => {
   if (!data) return <SplashScreen />;
 
   return (
-    <SafeAreaView className="bg-[#1F104A]">
-      <Stack.Screen options={{ title: data.title }} />
+    <SafeAreaView className="bg-zinc-900">
+      <Stack.Screen
+        options={{
+          headerTitle: () => (
+            <Text className="text-3xl font-semibold text-zinc-200">
+              {data.title}
+            </Text>
+          ),
+        }}
+      />
       <View className="h-full w-full p-4">
-        <Text className="py-2 text-3xl font-bold text-white">{data.title}</Text>
-        <Text className="py-4 text-white">{data.content}</Text>
+        <Text className="py-2 text-3xl font-bold text-zinc-200">
+          {data.title}
+        </Text>
+        <Text className="py-4 text-zinc-200">{data.content}</Text>
       </View>
     </SafeAreaView>
   );

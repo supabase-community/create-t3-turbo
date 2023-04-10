@@ -1,9 +1,11 @@
 import React from "react";
-import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Image } from "expo-image";
 import { Stack, useRouter } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 
+import { AuthAvatar } from "../components/header";
 import { api, type RouterOutputs } from "../utils/api";
 
 const PostCard: React.FC<{
@@ -15,15 +17,24 @@ const PostCard: React.FC<{
   return (
     <View className="flex flex-row rounded-lg bg-white/10 p-4">
       <View className="flex-grow">
-        <TouchableOpacity onPress={() => router.push(`/post/${post.id}`)}>
-          <Text className="text-xl font-semibold text-pink-400">
-            {post.title}
-          </Text>
-          <Text className="mt-2 text-white">{post.content}</Text>
+        <TouchableOpacity
+          onPress={() => router.push(`/post/${post.id}`)}
+          className="flex flex-row"
+        >
+          <Image
+            className="mr-2 h-10 w-10 self-center rounded-full"
+            source={post.author?.image ?? ""}
+          />
+          <View>
+            <Text className="text-xl font-semibold text-emerald-400">
+              {post.title}
+            </Text>
+            <Text className="mt-2 text-zinc-200">{post.content}</Text>
+          </View>
         </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={onDelete}>
-        <Text className="font-bold uppercase text-pink-400">Delete</Text>
+        <Text className="font-bold uppercase text-emerald-400">Delete</Text>
       </TouchableOpacity>
     </View>
   );
@@ -46,8 +57,8 @@ const CreatePost: React.FC = () => {
   return (
     <View className="mt-4">
       <TextInput
-        className="mb-2 rounded bg-white/10 p-2 text-white"
-        placeholderTextColor="rgba(255, 255, 255, 0.5)"
+        className="mb-2 rounded bg-white/10 p-2 text-zinc-200"
+        placeholderTextColor="#A1A1A9"
         value={title}
         onChangeText={setTitle}
         placeholder="Title"
@@ -58,8 +69,8 @@ const CreatePost: React.FC = () => {
         </Text>
       )}
       <TextInput
-        className="mb-2 rounded bg-white/10 p-2 text-white"
-        placeholderTextColor="rgba(255, 255, 255, 0.5)"
+        className="mb-2 rounded bg-white/10 p-2 text-zinc-200"
+        placeholderTextColor="#A1A1A9"
         value={content}
         onChangeText={setContent}
         placeholder="Content"
@@ -70,7 +81,7 @@ const CreatePost: React.FC = () => {
         </Text>
       )}
       <TouchableOpacity
-        className="rounded bg-pink-400 p-2"
+        className="rounded bg-emerald-400 p-2"
         onPress={() => {
           mutate({
             title,
@@ -78,8 +89,13 @@ const CreatePost: React.FC = () => {
           });
         }}
       >
-        <Text className="font-semibold text-white">Publish post</Text>
+        <Text className="font-semibold text-zinc-900">Publish post</Text>
       </TouchableOpacity>
+      {error?.data?.code === "UNAUTHORIZED" && (
+        <Text className="mt-2 text-red-500">
+          You need to be logged in to create a post
+        </Text>
+      )}
     </View>
   );
 };
@@ -94,25 +110,26 @@ const Index = () => {
   });
 
   return (
-    <SafeAreaView className="bg-[#1F104A]">
-      {/* Changes page title visible on the header */}
-      <Stack.Screen options={{ title: "Home Page" }} />
+    <SafeAreaView className="bg-zinc-900">
+      <Stack.Screen
+        options={{
+          headerLeft: () => <AuthAvatar />,
+          headerTitle: () => (
+            <Text className="text-3xl font-bold text-zinc-200">
+              <Text className="text-fuchsia-500">T3</Text>
+              <Text> x </Text>
+              <Text className="text-emerald-400">Supabase</Text>
+            </Text>
+          ),
+        }}
+      />
       <View className="h-full w-full p-4">
-        <Text className="mx-auto pb-2 text-5xl font-bold text-white">
-          Create <Text className="text-pink-400">T3</Text> Turbo
-        </Text>
-
-        <Button
+        <TouchableOpacity
+          className="my-4 rounded bg-emerald-400 p-2"
           onPress={() => void utils.post.all.invalidate()}
-          title="Refresh posts"
-          color={"#f472b6"}
-        />
-
-        <View className="py-2">
-          <Text className="font-semibold italic text-white">
-            Press on a post
-          </Text>
-        </View>
+        >
+          <Text className="font-semibold text-zinc-900">Refresh posts</Text>
+        </TouchableOpacity>
 
         <FlashList
           data={postQuery.data}
