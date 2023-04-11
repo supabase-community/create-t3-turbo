@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -58,10 +59,14 @@ function CreatePost() {
   const [content, setContent] = React.useState("");
 
   const { mutate, error } = api.post.create.useMutation({
-    async onSuccess() {
+    onSuccess: async () => {
       setTitle("");
       setContent("");
       await utils.post.all.invalidate();
+    },
+    onError: (error) => {
+      if (error.data?.code === "UNAUTHORIZED")
+        Alert.alert("Error", "You must be logged in to create a post");
     },
   });
 
@@ -107,11 +112,6 @@ function CreatePost() {
           >
             <Text className="font-semibold text-zinc-900">Publish post</Text>
           </TouchableOpacity>
-          {error?.data?.code === "UNAUTHORIZED" && (
-            <Text className="mt-2 text-red-500">
-              You need to be logged in to create a post
-            </Text>
-          )}
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
