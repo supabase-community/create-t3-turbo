@@ -1,8 +1,9 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import * as AppleAuthentication from "expo-apple-authentication";
-import * as Crypto from "expo-crypto";
 import { AntDesign } from "@expo/vector-icons";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+
+import { initiateAppleSignIn } from "../utils/auth";
 
 export default function Profile() {
   const user = useUser();
@@ -35,6 +36,29 @@ function SignedOutView() {
     // Open `data.url` on browser
   };
 
+  const signInWithApple = async () => {
+    try {
+      const { token, nonce } = await initiateAppleSignIn();
+      const { error } = await supabase.auth.signInWithIdToken({
+        provider: "apple",
+        token,
+        nonce,
+      });
+      if (error) throw error;
+    } catch (e) {
+      console.log("Error", e);
+      if (typeof e === "object" && !!e && "code" in e) {
+        if (e.code === "ERR_REQUEST_CANCELED") {
+          // handle that the user canceled the sign-in flow
+        } else {
+          // handle other errors
+        }
+      } else {
+        console.error("Unexpected error from Apple SignIn: ", e);
+      }
+    }
+  };
+
   return (
     <View className="space-y-4">
       <Text className="text-2xl font-bold text-zinc-200">
@@ -54,49 +78,7 @@ function SignedOutView() {
         buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
         className="h-14"
         cornerRadius={8}
-        onPress={async () => {
-          try {
-            const rawNonce = Crypto.randomUUID();
-            const hashedNonce = await Crypto.digestStringAsync(
-              Crypto.CryptoDigestAlgorithm.SHA256,
-              rawNonce,
-            );
-            const credential = await AppleAuthentication.signInAsync({
-              requestedScopes: [
-                AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                AppleAuthentication.AppleAuthenticationScope.EMAIL,
-              ],
-              nonce: hashedNonce,
-            });
-
-            const idToken = credential.identityToken;
-
-            console.log("Apple ID Token: ", idToken);
-
-            if (!idToken) {
-              throw "ID Token not found";
-            }
-            const { error, data } = await supabase.auth.signInWithIdToken({
-              provider: "apple",
-              token: idToken,
-              nonce: rawNonce,
-            });
-            console.log({ data, error });
-            if (error) throw error;
-            console.log("Signed in via Apple");
-          } catch (e) {
-            console.log("Error", e);
-            if (typeof e === "object" && !!e && "code" in e) {
-              if (e.code === "ERR_REQUEST_CANCELED") {
-                // handle that the user canceled the sign-in flow
-              } else {
-                // handle other errors
-              }
-            } else {
-              console.error("Unexpected error from Apple SignIn: ", e);
-            }
-          }
-        }}
+        onPress={signInWithApple}
       />
     </View>
   );
