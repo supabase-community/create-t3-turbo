@@ -20,7 +20,6 @@ export const supabase = createClient(
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: true,
-      // @ts-expect-error - FIXME: Update to new version when out
       flowType: "pkce",
     },
   },
