@@ -18,7 +18,7 @@ function SignedInView() {
 
   return (
     <View>
-      <Text>Signed in as {user?.email}</Text>
+      <Text className="text-zinc-200">Signed in as {user?.email}</Text>
     </View>
   );
 }
@@ -27,7 +27,7 @@ function SignedOutView() {
   const supabase = useSupabaseClient();
 
   const signInWithGithub = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "github",
     });
     if (error) return console.error(error.message);
@@ -71,17 +71,21 @@ function SignedOutView() {
 
             const idToken = credential.identityToken;
 
+            console.log("Apple ID Token: ", idToken);
+
             if (!idToken) {
               throw "ID Token not found";
             }
-            const { error } = await supabase.auth.signInWithIdToken({
+            const { error, data } = await supabase.auth.signInWithIdToken({
               provider: "apple",
               token: idToken,
               nonce: rawNonce,
             });
+            console.log({ data, error });
             if (error) throw error;
             console.log("Signed in via Apple");
           } catch (e) {
+            console.log("Error", e);
             if (typeof e === "object" && !!e && "code" in e) {
               if (e.code === "ERR_REQUEST_CANCELED") {
                 // handle that the user canceled the sign-in flow

@@ -3,8 +3,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
 
 import { api, type RouterOutputs } from "~/utils/api";
 
@@ -162,14 +160,14 @@ const AuthShowcase: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       {!user && (
-        <Auth
-          redirectTo="http://localhost:3000/"
-          appearance={{ theme: ThemeSupa }}
-          supabaseClient={supabaseClient}
-          providers={["apple", "github"]}
-          socialLayout="vertical"
-          onlyThirdPartyProviders
-        />
+        <button
+          className="rounded-full bg-white/10 px-10 py-3 font-semibold text-zinc-200 no-underline transition hover:bg-white/20"
+          onClick={() =>
+            supabaseClient.auth.signInWithOAuth({ provider: "github" })
+          }
+        >
+          Sign In with Github
+        </button>
       )}
       {user && (
         <>
