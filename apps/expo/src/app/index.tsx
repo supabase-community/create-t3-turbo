@@ -18,12 +18,19 @@ import { FlashList } from "@shopify/flash-list";
 import { AuthAvatar } from "../components/header";
 import { api, type RouterOutputs } from "../utils/api";
 
-function PostCard(props: {
-  post: RouterOutputs["post"]["all"][number];
-  onDelete: () => void;
-}) {
-  const router = useRouter();
+function PostCard(props: { post: RouterOutputs["post"]["all"][number] }) {
   const { post } = props;
+
+  const router = useRouter();
+  const utils = api.useContext();
+
+  const { mutate: deletePost } = api.post.delete.useMutation({
+    onSettled: () => utils.post.all.invalidate(),
+    onError: (error) => {
+      if (error.data?.code === "UNAUTHORIZED")
+        Alert.alert("Error", "Only the author can delete their post");
+    },
+  });
 
   return (
     <View className="flex flex-row rounded-lg bg-white/10 p-4">
@@ -45,7 +52,7 @@ function PostCard(props: {
           </View>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={props.onDelete}>
+      <TouchableOpacity onPress={() => deletePost(post.id)}>
         <Text className="font-bold uppercase text-emerald-400">Delete</Text>
       </TouchableOpacity>
     </View>
@@ -58,10 +65,11 @@ function CreatePost() {
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
 
-  const { mutate, error } = api.post.create.useMutation({
+  const { mutate: createPost, error } = api.post.create.useMutation({
     onSuccess: async () => {
       setTitle("");
       setContent("");
+      Keyboard.dismiss();
       await utils.post.all.invalidate();
     },
     onError: (error) => {
@@ -104,7 +112,7 @@ function CreatePost() {
           <TouchableOpacity
             className="rounded bg-emerald-400 p-2"
             onPress={() => {
-              mutate({
+              createPost({
                 title,
                 content,
               });
@@ -121,15 +129,7 @@ function CreatePost() {
 export default function HomeScreen() {
   const utils = api.useContext();
 
-  const postQuery = api.post.all.useQuery();
-
-  const deletePostMutation = api.post.delete.useMutation({
-    onSettled: () => utils.post.all.invalidate(),
-    onError: (error) => {
-      if (error.data?.code === "UNAUTHORIZED")
-        Alert.alert("Error", "Only the author can delete their post");
-    },
-  });
+  const { data: posts } = api.post.all.useQuery();
 
   return (
     <SafeAreaView className="bg-zinc-900">
@@ -154,15 +154,10 @@ export default function HomeScreen() {
         </TouchableOpacity>
 
         <FlashList
-          data={postQuery.data}
+          data={posts}
           estimatedItemSize={20}
           ItemSeparatorComponent={() => <View className="h-2" />}
-          renderItem={(p) => (
-            <PostCard
-              post={p.item}
-              onDelete={() => deletePostMutation.mutate(p.item.id)}
-            />
-          )}
+          renderItem={(p) => <PostCard post={p.item} />}
         />
 
         <CreatePost />
