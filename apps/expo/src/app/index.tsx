@@ -1,5 +1,14 @@
 import React from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
 import { Stack, useRouter } from "expo-router";
@@ -19,7 +28,8 @@ function PostCard(props: {
     <View className="flex flex-row rounded-lg bg-white/10 p-4">
       <View className="flex-grow">
         <TouchableOpacity
-          onPress={() => router.push(`/post/${post.id}`)}
+          // pass title as query string to avoid loading state on header
+          onPress={() => router.push(`/post/${post.id}?title=${post.title}`)}
           className="flex flex-row"
         >
           <Image
@@ -56,48 +66,55 @@ function CreatePost() {
   });
 
   return (
-    <View className="mt-4">
-      <TextInput
-        className="mb-2 rounded bg-white/10 p-2 text-zinc-200"
-        placeholderTextColor="#A1A1A9" // zinc-400
-        value={title}
-        onChangeText={setTitle}
-        placeholder="Title"
-      />
-      {error?.data?.zodError?.fieldErrors.title && (
-        <Text className="mb-2 text-red-500">
-          {error.data.zodError.fieldErrors.title}
-        </Text>
-      )}
-      <TextInput
-        className="mb-2 rounded bg-white/10 p-2 text-zinc-200"
-        placeholderTextColor="#A1A1A9" // zinc-400
-        value={content}
-        onChangeText={setContent}
-        placeholder="Content"
-      />
-      {error?.data?.zodError?.fieldErrors.content && (
-        <Text className="mb-2 text-red-500">
-          {error.data.zodError.fieldErrors.content}
-        </Text>
-      )}
-      <TouchableOpacity
-        className="rounded bg-emerald-400 p-2"
-        onPress={() => {
-          mutate({
-            title,
-            content,
-          });
-        }}
-      >
-        <Text className="font-semibold text-zinc-900">Publish post</Text>
-      </TouchableOpacity>
-      {error?.data?.code === "UNAUTHORIZED" && (
-        <Text className="mt-2 text-red-500">
-          You need to be logged in to create a post
-        </Text>
-      )}
-    </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={150}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} className="flex-1">
+        <View className="mt-4 justify-around">
+          <TextInput
+            className="mb-2 rounded bg-white/10 p-2 text-zinc-200"
+            placeholderTextColor="#A1A1A9" // zinc-400
+            value={title}
+            onChangeText={setTitle}
+            placeholder="Title"
+          />
+          {error?.data?.zodError?.fieldErrors.title && (
+            <Text className="mb-2 text-red-500">
+              {error.data.zodError.fieldErrors.title}
+            </Text>
+          )}
+          <TextInput
+            className="mb-2 rounded bg-white/10 p-2 text-zinc-200"
+            placeholderTextColor="#A1A1A9" // zinc-400
+            value={content}
+            onChangeText={setContent}
+            placeholder="Content"
+          />
+          {error?.data?.zodError?.fieldErrors.content && (
+            <Text className="mb-2 text-red-500">
+              {error.data.zodError.fieldErrors.content}
+            </Text>
+          )}
+          <TouchableOpacity
+            className="rounded bg-emerald-400 p-2"
+            onPress={() => {
+              mutate({
+                title,
+                content,
+              });
+            }}
+          >
+            <Text className="font-semibold text-zinc-900">Publish post</Text>
+          </TouchableOpacity>
+          {error?.data?.code === "UNAUTHORIZED" && (
+            <Text className="mt-2 text-red-500">
+              You need to be logged in to create a post
+            </Text>
+          )}
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
