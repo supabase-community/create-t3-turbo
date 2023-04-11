@@ -15,11 +15,18 @@ export default function Profile() {
 }
 
 function SignedInView() {
+  const supabase = useSupabaseClient();
   const user = useUser();
 
   return (
-    <View>
+    <View className="flex gap-4">
       <Text className="text-zinc-200">Signed in as {user?.email}</Text>
+      <TouchableOpacity
+        onPress={() => supabase.auth.signOut()}
+        className="flex-row items-center justify-center gap-2 rounded-lg bg-zinc-200 p-2"
+      >
+        <Text className="text-xl font-semibold text-zinc-900">Sign out</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -28,9 +35,10 @@ function SignedOutView() {
   const supabase = useSupabaseClient();
 
   const signInWithGithub = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { error, data } = await supabase.auth.signInWithOAuth({
       provider: "github",
     });
+    console.log({ data });
     if (error) return console.error(error.message);
 
     // Open `data.url` on browser

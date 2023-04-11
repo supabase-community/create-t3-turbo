@@ -159,7 +159,12 @@ function AuthShowcase() {
       {!user && (
         <button
           className="rounded-full bg-white/10 px-10 py-3 font-semibold text-zinc-200 no-underline transition hover:bg-white/20"
-          onClick={() => supabase.auth.signInWithOAuth({ provider: "github" })}
+          onClick={() =>
+            supabase.auth.signInWithOAuth({
+              provider: "github",
+              options: { scopes: "read:user user:email" },
+            })
+          }
         >
           Sign In with Github
         </button>
