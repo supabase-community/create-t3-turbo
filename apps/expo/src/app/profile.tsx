@@ -71,8 +71,6 @@ function SignedOutView() {
 
             const idToken = credential.identityToken;
 
-            console.log(idToken);
-
             if (!idToken) {
               throw "ID Token not found";
             }
@@ -81,7 +79,6 @@ function SignedOutView() {
               token: idToken,
               nonce: rawNonce,
             });
-            console.log(error);
             if (error) throw error;
             console.log("Signed in via Apple");
           } catch (e) {
