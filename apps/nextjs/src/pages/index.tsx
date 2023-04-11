@@ -1,22 +1,21 @@
 import { useState } from "react";
-import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 
 import { api, type RouterOutputs } from "~/utils/api";
 
-const PostCard: React.FC<{
+function PostCard(props: {
   post: RouterOutputs["post"]["all"][number];
   onPostDelete?: () => void;
-}> = ({ post, onPostDelete }) => {
-  const { author } = post;
+}) {
+  const { post } = props;
   return (
     <div className="flex flex-row rounded-lg bg-white/10 p-4 transition-all hover:scale-[101%]">
       <Image
         className="mr-2 self-center rounded"
-        src={author?.image ?? ""}
-        alt={`${author?.name}'s avatar`}
+        src={post.author?.image ?? ""}
+        alt={`${post.author?.name}'s avatar`}
         width={64}
         height={64}
       />
@@ -27,16 +26,16 @@ const PostCard: React.FC<{
       <div>
         <span
           className="cursor-pointer text-sm font-bold uppercase text-emerald-400"
-          onClick={onPostDelete}
+          onClick={props.onPostDelete}
         >
           Delete
         </span>
       </div>
     </div>
   );
-};
+}
 
-const CreatePostForm: React.FC = () => {
+function CreatePostForm() {
   const utils = api.useContext();
 
   const [title, setTitle] = useState("");
@@ -92,9 +91,9 @@ const CreatePostForm: React.FC = () => {
       )}
     </div>
   );
-};
+}
 
-const Home: NextPage = () => {
+export default function HomePage() {
   const postQuery = api.post.all.useQuery();
 
   const deletePostMutation = api.post.delete.useMutation({
@@ -145,12 +144,10 @@ const Home: NextPage = () => {
       </main>
     </>
   );
-};
+}
 
-export default Home;
-
-const AuthShowcase: React.FC = () => {
-  const supabaseClient = useSupabaseClient();
+function AuthShowcase() {
+  const supabase = useSupabaseClient();
   const user = useUser();
   const { data: secretMessage } = api.auth.getSecretMessage.useQuery(
     undefined, // no input
@@ -162,9 +159,7 @@ const AuthShowcase: React.FC = () => {
       {!user && (
         <button
           className="rounded-full bg-white/10 px-10 py-3 font-semibold text-zinc-200 no-underline transition hover:bg-white/20"
-          onClick={() =>
-            supabaseClient.auth.signInWithOAuth({ provider: "github" })
-          }
+          onClick={() => supabase.auth.signInWithOAuth({ provider: "github" })}
         >
           Sign In with Github
         </button>
@@ -177,7 +172,7 @@ const AuthShowcase: React.FC = () => {
           </p>
           <button
             className="rounded-full bg-white/10 px-10 py-3 font-semibold text-zinc-200 no-underline transition hover:bg-white/20"
-            onClick={() => void supabaseClient.auth.signOut()}
+            onClick={() => void supabase.auth.signOut()}
           >
             Sign Out
           </button>
@@ -185,4 +180,4 @@ const AuthShowcase: React.FC = () => {
       )}
     </div>
   );
-};
+}

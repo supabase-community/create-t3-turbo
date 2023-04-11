@@ -5,15 +5,15 @@ import {
 
 import "../styles/globals.css";
 import { useState } from "react";
-import type { AppType } from "next/app";
+import type { AppProps } from "next/app";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 
 import { api } from "~/utils/api";
 
-const MyApp: AppType<{ initialSession: Session | null }> = ({
+function MyApp({
   Component,
   pageProps,
-}) => {
+}: AppProps<{ initialSession: Session | null }>) {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
 
   return (
@@ -24,6 +24,6 @@ const MyApp: AppType<{ initialSession: Session | null }> = ({
       <Component {...pageProps} />
     </SessionContextProvider>
   );
-};
+}
 
 export default api.withTRPC(MyApp);
