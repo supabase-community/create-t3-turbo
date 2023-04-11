@@ -125,6 +125,10 @@ export default function HomeScreen() {
 
   const deletePostMutation = api.post.delete.useMutation({
     onSettled: () => utils.post.all.invalidate(),
+    onError: (error) => {
+      if (error.data?.code === "UNAUTHORIZED")
+        Alert.alert("Error", "Only the author can delete their post");
+    },
   });
 
   return (
