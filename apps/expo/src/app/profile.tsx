@@ -1,5 +1,6 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import * as AppleAuthentication from "expo-apple-authentication";
+import * as Crypto from "expo-crypto";
 import { AntDesign } from "@expo/vector-icons";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 
@@ -25,10 +26,14 @@ function SignedInView() {
 function SignedOutView() {
   const supabase = useSupabaseClient();
 
-  const signInWithGithub = () =>
-    supabase.auth
-      .signInWithOAuth({ provider: "github" })
-      .then((res) => console.log(res));
+  const signInWithGithub = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "github",
+    });
+    if (error) return console.error(error.message);
+
+    // Open `data.url` on browser
+  };
 
   return (
     <View className="space-y-4">
@@ -51,13 +56,34 @@ function SignedOutView() {
         cornerRadius={8}
         onPress={async () => {
           try {
-            const _credential = await AppleAuthentication.signInAsync({
+            const rawNonce = Crypto.randomUUID();
+            const hashedNonce = await Crypto.digestStringAsync(
+              Crypto.CryptoDigestAlgorithm.SHA256,
+              rawNonce,
+            );
+            const credential = await AppleAuthentication.signInAsync({
               requestedScopes: [
                 AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
                 AppleAuthentication.AppleAuthenticationScope.EMAIL,
               ],
+              nonce: hashedNonce,
             });
-            // signed in
+
+            const idToken = credential.identityToken;
+
+            console.log(idToken);
+
+            if (!idToken) {
+              throw "ID Token not found";
+            }
+            const { error } = await supabase.auth.signInWithIdToken({
+              provider: "apple",
+              token: idToken,
+              nonce: rawNonce,
+            });
+            console.log(error);
+            if (error) throw error;
+            console.log("Signed in via Apple");
           } catch (e) {
             if (typeof e === "object" && !!e && "code" in e) {
               if (e.code === "ERR_REQUEST_CANCELED") {
