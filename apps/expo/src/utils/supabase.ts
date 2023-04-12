@@ -19,8 +19,10 @@ export const supabase = createClient(
       storage: ExpoSecureStoreAdapter,
       autoRefreshToken: true,
       persistSession: true,
-      detectSessionInUrl: true,
-      flowType: "pkce",
+      detectSessionInUrl: false,
+      // TODO: Enable pkce
+      // detectSessionInUrl: true,
+      // flowType: "pkce",
     },
   },
 );

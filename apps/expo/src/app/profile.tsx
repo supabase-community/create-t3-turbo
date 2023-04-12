@@ -1,5 +1,7 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import * as AppleAuthentication from "expo-apple-authentication";
+import { makeRedirectUri } from "expo-auth-session";
+import * as WebBrowser from "expo-web-browser";
 import { AntDesign } from "@expo/vector-icons";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 
@@ -38,10 +40,25 @@ function SignedOutView() {
     const { error, data } = await supabase.auth.signInWithOAuth({
       provider: "github",
     });
-    console.log({ data });
     if (error) return console.error(error.message);
 
-    // Open `data.url` on browser
+    const redirect = makeRedirectUri({
+      path: "/auth/callback",
+    });
+    console.log({ redirect });
+
+    const res = await WebBrowser.openAuthSessionAsync(
+      data.url + "&redirect_uri=" + redirect,
+      redirect,
+    );
+    console.log({ res });
+
+    if (res.type !== "success") throw new Error();
+    const params = new URL(res.url).searchParams;
+    const state = params.get("state");
+    const code = params.get("code");
+
+    console.log({ state, code });
   };
 
   const signInWithApple = async () => {
