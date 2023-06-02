@@ -15,8 +15,8 @@ import { Image } from "expo-image";
 import { Stack, useRouter } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 
-import { AuthAvatar } from "../components/header";
-import { api, type RouterOutputs } from "../utils/api";
+import { api, type RouterOutputs } from "~/utils/api";
+import { AuthAvatar } from "~/components/header";
 
 function PostCard(props: { post: RouterOutputs["post"]["all"][number] }) {
   const { post } = props;

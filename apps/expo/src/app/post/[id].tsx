@@ -1,7 +1,7 @@
 import { SafeAreaView, Text, View } from "react-native";
 import { Stack, useSearchParams } from "expo-router";
 
-import { api } from "../../utils/api";
+import { api } from "~/utils/api";
 
 export default function PostPage() {
   const { id, title } = useSearchParams();

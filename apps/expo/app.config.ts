@@ -35,7 +35,7 @@ const defineConfig = (): ExpoConfig => ({
   },
   extra: {
     eas: {
-      projectId: "your-project-id",
+      // projectId: "your-project-id",
     },
     SUPABASE_URL,
     SUPABASE_ANON_KEY,
