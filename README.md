@@ -13,29 +13,6 @@ This is an extended version of [create-t3-turbo](https://github.com/t3-oss/creat
 We have preconfigured this for you which you can find [here](./apps/expo/src/utils/auth.ts). All you need to do is to enable the Apple Provider in your [Supabase dashboard](https://app.supabase.com) and fill in your information.
 
 > We currently only supports `Sign in with Apple` - support for more providers on mobile are being worked on!
-> In this template, we use `@acme` as a placeholder for package names. As a user, you might want to replace it with your own organization or project name. You can use find-and-replace to change all the instances of `@acme/` to something like `@my-company/` / `@project-name/`.
-
-## Installation
-
-There are two ways of initializing an app using `create-t3-turbo` starter. You can either use this repository as a template or use Turbo's CLI to init your project:
-
-```bash
-npx create-turbo@latest -e https://github.com/supabase-community/create-t3-turbo
-```
-
-## FAQ
-
-### Can you include Solito?
-
-No. Solito will not be included in this repo. It is a great tool if you want to share code between your Next.js and Expo app. However, the main purpose of this repo is not the integration between Next.js and Expo - it's the codesplitting of your T3 App into a monorepo, the Expo app is just a bonus example of how you can utilize the monorepo with multiple apps but can just as well be any app such as Vite, Electron, etc.
-
-Integrating Solito into this repo isn't hard, and there are a few [offical templates](https://github.com/nandorojo/solito/tree/master/example-monorepos) by the creators of Solito that you can use as a reference.
-
-### Does this pattern leak backend code to my client applications?
-
-No, it does not. The `api` package should only be a production dependency in the Next.js application where it's served. The Expo app, and all other apps you may add in the future, should only add the `api` package as a dev dependency. This lets you have full typesafety in your client applications, while keeping your backend code safe.
-
-If you need to share runtime code between the client and server, such as input validation schemas, you can create a separate `shared` package for this and import on both sides.
 
 ## Quick Start
 
