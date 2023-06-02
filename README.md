@@ -2,14 +2,6 @@
 
 ![CleanShot 2023-04-11 at 23 42 53@2x](https://user-images.githubusercontent.com/51714798/231294720-1c64b391-4ecf-42d2-aad2-8c486c5d6bf5.png)
 
-## Installation
-
-There are two ways of initializing an app using `create-t3-turbo` starter. You can either use this repository as a template or use Turbo's CLI to init your project:
-
-```bash
-npx create-turbo@latest -e https://github.com/t3-oss/create-t3-turbo
-```
-
 ## About
 
 This is an extended version of [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo) implementing authentication using [Supabase Auth](https://supabase.com/docs/guides/auth) on both the web and mobile applications.
@@ -22,6 +14,14 @@ We have preconfigured this for you which you can find [here](./apps/expo/src/uti
 
 > We currently only supports `Sign in with Apple` - support for more providers on mobile are being worked on!
 > In this template, we use `@acme` as a placeholder for package names. As a user, you might want to replace it with your own organization or project name. You can use find-and-replace to change all the instances of `@acme/` to something like `@my-company/` / `@project-name/`.
+
+## Installation
+
+There are two ways of initializing an app using `create-t3-turbo` starter. You can either use this repository as a template or use Turbo's CLI to init your project:
+
+```bash
+npx create-turbo@latest -e https://github.com/supabase-community/create-t3-turbo
+```
 
 ## FAQ
 
