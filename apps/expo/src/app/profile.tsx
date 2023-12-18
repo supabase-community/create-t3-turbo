@@ -57,6 +57,17 @@ function SignedOutView() {
     }
   };
 
+  const signInWithGoogle = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+      });
+      if (error) throw error;
+    } catch (error) {
+      console.error("Google sign in error:", error);
+    }
+  };
+
   return (
     <View className="space-y-4">
       <Text className="mb-4 text-2xl font-bold text-zinc-200">Sign In</Text>
@@ -78,6 +89,14 @@ function SignedOutView() {
         onPress={signInWithApple}
         style={{ height: 40 }}
       />
+
+      {/* Sign in with Google */}
+      <Pressable
+        className="flex items-center gap-1 rounded-lg bg-white/10 px-10 py-2 font-semibold text-zinc-200 no-underline transition hover:bg-white/20"
+        onPress={signInWithGoogle}
+      >
+        <Text className="text-lg text-zinc-200">Continue with Google</Text>
+      </Pressable>
     </View>
   );
 }

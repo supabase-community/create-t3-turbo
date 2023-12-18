@@ -7,9 +7,9 @@ const config = {
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: ["@acme/api", "@acme/db"],
 
-  // Allow optimizing avatar images from GitHub
+  // Allow optimizing avatar images from GitHub and Google
   images: {
-    domains: ["avatars.githubusercontent.com"],
+    domains: ["avatars.githubusercontent.com", "lh3.googleusercontent.com"],
   },
 
   /** We already do linting and typechecking as separate tasks in CI */

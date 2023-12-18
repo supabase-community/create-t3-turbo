@@ -6,6 +6,47 @@
 
 This is an extended version of [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo) implementing authentication using [Supabase Auth](https://supabase.com/docs/guides/auth) on both the web and mobile applications.
 
+```text
+.github
+  └─ workflows
+        └─ CI with pnpm cache setup
+.vscode
+  └─ Recommended extensions and settings for VSCode users
+apps
+  ├─ auth-proxy
+  |   ├─ Nitro server to proxy OAuth requests in preview deployments
+  |   └─ Uses Auth.js Core
+  ├─ expo
+  |   ├─ Expo SDK 49
+  |   ├─ React Native using React 18
+  |   ├─ Navigation using Expo Router
+  |   ├─ Tailwind using Nativewind
+  |   └─ Typesafe API calls using tRPC
+  └─ next.js
+      ├─ Next.js 14
+      ├─ React 18
+      ├─ Tailwind CSS
+      └─ E2E Typesafe API Server & Client
+packages
+  ├─ api
+  |   └─ tRPC v10 router definition
+  ├─ auth
+  |   └─ Authentication using next-auth. **NOTE: Only for Next.js app, not Expo**
+  └─ db
+      └─ Typesafe db calls using Drizzle & Planetscale
+tooling
+  ├─ eslint
+  |   └─ shared, fine-grained, eslint presets
+  ├─ prettier
+  |   └─ shared prettier configuration
+  ├─ tailwind
+  |   └─ shared tailwind configuration
+  └─ typescript
+      └─ shared tsconfig you can extend from
+```
+
+> In this template, we use `@acme` as a placeholder for package names. As a user, you might want to replace it with your own organization or project name. You can use find-and-replace to change all the instances of `@acme` to something like `@my-company` or `@project-name`.
+
 ### Side note for mobile
 
 **iOS:** One of the requirements for Apple's review process requires you to implement native `Sign in with Apple` if you're providing any other third party authentication method. Read more in [Section 4.8 - Design: Sign in with Apple](https://developer.apple.com/app-store/review/guidelines/#sign-in-with-apple).

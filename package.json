@@ -8,6 +8,8 @@
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
+    "app": "pnpm --filter expo dev",
+    "serve": "pnpm --filter nextjs dev",
     "clean:workspaces": "turbo clean",
     "postinstall": "pnpm lint:ws",
     "db:push": "pnpm -F db push",

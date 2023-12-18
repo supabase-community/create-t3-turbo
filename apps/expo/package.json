@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@expo/metro-config": "^0.10.7",
+    "@react-native-google-signin/google-signin": "^11.0.0",
     "@shopify/flash-list": "1.4.3",
     "@supabase/auth-helpers-react": "^0.4.2",
     "@supabase/supabase-js": "^2.39.0",

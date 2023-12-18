@@ -29,6 +29,9 @@ importers:
       '@expo/metro-config':
         specifier: ^0.10.7
         version: 0.10.7
+      '@react-native-google-signin/google-signin':
+        specifier: ^11.0.0
+        version: 11.0.0(expo@49.0.21)(react-native@0.72.6)(react@18.2.0)
       '@shopify/flash-list':
         specifier: 1.4.3
         version: 1.4.3(@babel/runtime@7.23.6)(react-native@0.72.6)(react@18.2.0)
@@ -3414,6 +3417,21 @@ packages:
       - encoding
       - supports-color
       - utf-8-validate
+    dev: false
+
+  /@react-native-google-signin/google-signin@11.0.0(expo@49.0.21)(react-native@0.72.6)(react@18.2.0):
+    resolution: {integrity: sha512-J8BFFGr5HcEWE2gRaVSJ0rQN8ztxYIr2wdWMG4PS1vhQZJqUzmRr6vpu12O1GppItq8ai7AA0rl/ja7hSytSXA==}
+    peerDependencies:
+      expo: '>=47.0.0'
+      react: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      expo:
+        optional: true
+    dependencies:
+      expo: 49.0.21(@babel/core@7.23.6)
+      react: 18.2.0
+      react-native: 0.72.6(@babel/core@7.23.6)(@babel/preset-env@7.23.6)(react@18.2.0)
     dev: false
 
   /@react-native/assets-registry@0.72.0:

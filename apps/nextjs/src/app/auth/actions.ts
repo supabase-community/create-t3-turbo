@@ -45,6 +45,19 @@ export const signInWithGithub = async () => {
   throw res.error;
 };
 
+export const signInWithGoogle = async () => {
+  const origin = headers().get("origin");
+  const supabase = createServerActionClient({ cookies });
+
+  const res = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: `${origin}/auth/callback` },
+  });
+
+  if (res.data.url) redirect(res.data.url);
+  throw res.error;
+};
+
 export const signOut = async () => {
   const supabase = createServerActionClient({ cookies });
   await supabase.auth.signOut();

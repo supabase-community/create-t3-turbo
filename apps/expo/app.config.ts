@@ -10,8 +10,8 @@ if (
 }
 
 const defineConfig = (): ExpoConfig => ({
-  name: "expo",
-  slug: "expo",
+  name: "circa",
+  slug: "circa",
   scheme: "expo",
   version: "2.0.0",
   orientation: "portrait",
@@ -27,12 +27,12 @@ const defineConfig = (): ExpoConfig => ({
   },
   assetBundlePatterns: ["**/*"],
   ios: {
-    bundleIdentifier: "your.bundle.identifier",
+    bundleIdentifier: "circa",
     supportsTablet: true,
     usesAppleSignIn: true,
   },
   android: {
-    package: "your.bundle.identifier",
+    package: "circa",
     adaptiveIcon: {
       foregroundImage: "./assets/icon.png",
       backgroundColor: "#18181A",
@@ -50,6 +50,13 @@ const defineConfig = (): ExpoConfig => ({
   plugins: [
     "./expo-plugins/with-modify-gradle.js",
     "expo-apple-authentication",
+    [
+      "@react-native-google-signin/google-signin",
+      {
+        iosUrlScheme:
+          "com.googleusercontent.apps.706230225419-7tu57tu0jfk7760fuk5uijrkg7tn7pre",
+      },
+    ],
   ],
 });
 
