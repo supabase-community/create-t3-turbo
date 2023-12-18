@@ -1,13 +1,13 @@
-import * as SecureStore from "expo-secure-store";
-import { createClient } from "@supabase/supabase-js";
+import * as SecureStore from "expo-secure-store"
+import { createClient } from "@supabase/supabase-js"
 
-import "react-native-url-polyfill/auto";
+import "react-native-url-polyfill/auto"
 
 const ExpoSecureStoreAdapter = {
   getItem: (key: string) => SecureStore.getItemAsync(key),
   setItem: (key: string, value: string) => SecureStore.setItemAsync(key, value),
-  removeItem: (key: string) => SecureStore.deleteItemAsync(key),
-};
+  removeItem: (key: string) => SecureStore.deleteItemAsync(key)
+}
 
 export const supabase = createClient(
   // App Throws if these are not defined, so we can safely cast
@@ -19,7 +19,7 @@ export const supabase = createClient(
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: true,
-      flowType: "pkce",
-    },
-  },
-);
+      flowType: "pkce"
+    }
+  }
+)

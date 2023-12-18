@@ -1,14 +1,14 @@
-import { SafeAreaView, Text, View } from "react-native";
-import { Stack, useGlobalSearchParams } from "expo-router";
+import { SafeAreaView, Text, View } from "react-native"
+import { Stack, useGlobalSearchParams } from "expo-router"
 
-import { api } from "~/utils/api";
+import { api } from "~/utils/api"
 
 export default function Post() {
-  const { id } = useGlobalSearchParams();
-  if (!id || typeof id !== "string") throw new Error("unreachable");
-  const { data: post } = api.post.byId.useQuery({ id });
+  const { id } = useGlobalSearchParams()
+  if (!id || typeof id !== "string") throw new Error("unreachable")
+  const { data: post } = api.post.byId.useQuery({ id })
 
-  if (!post) return null;
+  if (!post) return null
 
   return (
     <SafeAreaView className="bg-zinc-900">
@@ -20,5 +20,5 @@ export default function Post() {
         <Text className="py-4 text-zinc-200">{post?.content}</Text>
       </View>
     </SafeAreaView>
-  );
+  )
 }

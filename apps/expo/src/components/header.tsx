@@ -1,14 +1,14 @@
-import type { ReactNode } from "react";
-import { Button, Text, TouchableOpacity } from "react-native";
-import { useRouter } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+import type { ReactNode } from "react"
+import { Button, Text, TouchableOpacity } from "react-native"
+import { useRouter } from "expo-router"
+import { Ionicons } from "@expo/vector-icons"
 
 export function AuthAvatar() {
   // const user = useUser();
-  const router = useRouter();
+  const router = useRouter()
   // const profileImage = user?.user_metadata.avatar_url as string | undefined;
 
-  return <Button title="Sign In" onPress={() => router.push("/profile")} />;
+  return <Button title="Sign In" onPress={() => router.push("/profile")} />
 
   /**
    * FIXME: Something is wrong when rendering anything but a Button here...
@@ -32,12 +32,12 @@ export function AuthAvatar() {
 }
 
 export function HeaderBackButton() {
-  const router = useRouter();
+  const router = useRouter()
   return (
     <TouchableOpacity onPress={() => router.back()}>
       <Ionicons name="arrow-back" size={32} color="#E4E4E7" />
     </TouchableOpacity>
-  );
+  )
 }
 
 export function HeaderTitle(props: { children: ReactNode }) {
@@ -45,5 +45,5 @@ export function HeaderTitle(props: { children: ReactNode }) {
     <Text className="text-3xl font-semibold text-zinc-200">
       {props.children}
     </Text>
-  );
+  )
 }

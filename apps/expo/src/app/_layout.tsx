@@ -1,17 +1,17 @@
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { Stack } from "expo-router"
+import { StatusBar } from "expo-status-bar"
+import { SessionContextProvider } from "@supabase/auth-helpers-react"
 
-import { HeaderBackButton, HeaderTitle } from "../components/header";
-import { TRPCProvider } from "../utils/api";
-import { supabase } from "../utils/supabase";
+import { HeaderBackButton, HeaderTitle } from "../components/header"
+import { TRPCProvider } from "../utils/api"
+import { supabase } from "../utils/supabase"
 
-import "../styles.css";
+import "../styles.css"
 
-import { SafeAreaView } from "react-native-safe-area-context";
-import { cssInterop } from "nativewind";
+import { SafeAreaView } from "react-native-safe-area-context"
+import { cssInterop } from "nativewind"
 
-cssInterop(SafeAreaView, { className: "style" });
+cssInterop(SafeAreaView, { className: "style" })
 
 // This is the main layout of the app
 // It wraps your pages with the providers they need
@@ -28,8 +28,8 @@ export default function RootLayout() {
             headerLeft: HeaderBackButton,
             headerTitle: HeaderTitle,
             headerStyle: {
-              backgroundColor: "#18181A",
-            },
+              backgroundColor: "#18181A"
+            }
           }}
         >
           {/*
@@ -40,12 +40,12 @@ export default function RootLayout() {
             name="profile"
             options={{
               presentation: "modal",
-              headerTitle: () => <></>,
+              headerTitle: () => <></>
             }}
           />
         </Stack>
         <StatusBar />
       </TRPCProvider>
     </SessionContextProvider>
-  );
+  )
 }

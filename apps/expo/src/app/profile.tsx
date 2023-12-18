@@ -1,23 +1,23 @@
-import { useState } from "react";
-import { Alert, Pressable, Text, TextInput, View } from "react-native";
-import * as AppleAuthentication from "expo-apple-authentication";
-import { AntDesign } from "@expo/vector-icons";
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import { useState } from "react"
+import { Alert, Pressable, Text, TextInput, View } from "react-native"
+import * as AppleAuthentication from "expo-apple-authentication"
+import { AntDesign } from "@expo/vector-icons"
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react"
 
-import { initiateAppleSignIn } from "../utils/auth";
+import { initiateAppleSignIn } from "../utils/auth"
 
 export default function Profile() {
-  const user = useUser();
+  const user = useUser()
   return (
     <View className="flex-1 bg-zinc-800 p-4">
       {user ? <SignedInView /> : <SignedOutView />}
     </View>
-  );
+  )
 }
 
 function SignedInView() {
-  const supabase = useSupabaseClient();
-  const user = useUser();
+  const supabase = useSupabaseClient()
+  const user = useUser()
 
   return (
     <View className="flex gap-4">
@@ -29,21 +29,21 @@ function SignedInView() {
         <Text className="text-xl font-semibold text-zinc-900">Sign out</Text>
       </Pressable>
     </View>
-  );
+  )
 }
 
 function SignedOutView() {
-  const supabase = useSupabaseClient();
+  const supabase = useSupabaseClient()
 
   const signInWithApple = async () => {
     try {
-      const { token, nonce } = await initiateAppleSignIn();
+      const { token, nonce } = await initiateAppleSignIn()
       const { error } = await supabase.auth.signInWithIdToken({
         provider: "apple",
         token,
-        nonce,
-      });
-      if (error) return Alert.alert("Error", error.message);
+        nonce
+      })
+      if (error) return Alert.alert("Error", error.message)
     } catch (e) {
       if (typeof e === "object" && !!e && "code" in e) {
         if (e.code === "ERR_REQUEST_CANCELED") {
@@ -52,21 +52,21 @@ function SignedOutView() {
           // handle other errors
         }
       } else {
-        console.error("Unexpected error from Apple SignIn: ", e);
+        console.error("Unexpected error from Apple SignIn: ", e)
       }
     }
-  };
+  }
 
   const signInWithGoogle = async () => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-      });
-      if (error) throw error;
+        provider: "google"
+      })
+      if (error) throw error
     } catch (error) {
-      console.error("Google sign in error:", error);
+      console.error("Google sign in error:", error)
     }
-  };
+  }
 
   return (
     <View className="space-y-4">
@@ -98,33 +98,33 @@ function SignedOutView() {
         <Text className="text-lg text-zinc-200">Continue with Google</Text>
       </Pressable>
     </View>
-  );
+  )
 }
 
 function EmailForm() {
-  const supabase = useSupabaseClient();
+  const supabase = useSupabaseClient()
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
+  const [isSignUp, setIsSignUp] = useState(false)
 
   const signInWithPassword = async () => {
     const { error, data } = isSignUp
       ? await supabase.auth.signUp({
           email,
-          password,
+          password
         })
       : await supabase.auth.signInWithPassword({
           email,
-          password,
-        });
-    if (error) Alert.alert("Error", error.message);
+          password
+        })
+    if (error) Alert.alert("Error", error.message)
     else if (isSignUp && data.user) {
-      Alert.alert("Check your email for a confirmation link.");
-      setIsSignUp(false);
+      Alert.alert("Check your email for a confirmation link.")
+      setIsSignUp(false)
     }
-  };
+  }
 
   return (
     <View className="flex-col gap-4">
@@ -170,5 +170,5 @@ function EmailForm() {
         </Text>
       </Pressable>
     </View>
-  );
+  )
 }

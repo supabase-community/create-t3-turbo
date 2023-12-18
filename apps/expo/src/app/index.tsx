@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import {
   Alert,
   Keyboard,
@@ -8,29 +8,29 @@ import {
   Text,
   TextInput,
   TouchableWithoutFeedback,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Image } from "expo-image";
-import { Link, Stack } from "expo-router";
-import { FlashList } from "@shopify/flash-list";
+  View
+} from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
+import { Image } from "expo-image"
+import { Link, Stack } from "expo-router"
+import { FlashList } from "@shopify/flash-list"
 
-import type { RouterOutputs } from "../utils/api";
-import { AuthAvatar } from "../components/header";
-import { api } from "../utils/api";
+import type { RouterOutputs } from "../utils/api"
+import { AuthAvatar } from "../components/header"
+import { api } from "../utils/api"
 
 function PostCard(props: { post: RouterOutputs["post"]["all"][number] }) {
-  const { post } = props;
+  const { post } = props
 
-  const utils = api.useUtils();
+  const utils = api.useUtils()
 
   const { mutate: deletePost } = api.post.delete.useMutation({
     onSettled: () => utils.post.all.invalidate(),
     onError: (error) => {
       if (error.data?.code === "UNAUTHORIZED")
-        Alert.alert("Error", "Only the author can delete their post");
-    },
-  });
+        Alert.alert("Error", "Only the author can delete their post")
+    }
+  })
 
   return (
     <View className="flex flex-row rounded-lg bg-white/10 p-4">
@@ -39,7 +39,7 @@ function PostCard(props: { post: RouterOutputs["post"]["all"][number] }) {
           asChild
           href={{
             pathname: "/post/[id]",
-            params: { id: props.post.id },
+            params: { id: props.post.id }
           }}
         >
           <Pressable>
@@ -60,27 +60,27 @@ function PostCard(props: { post: RouterOutputs["post"]["all"][number] }) {
         <Text className="font-bold uppercase text-emerald-400">Delete</Text>
       </Pressable>
     </View>
-  );
+  )
 }
 
 function CreatePost() {
-  const utils = api.useUtils();
+  const utils = api.useUtils()
 
-  const [title, setTitle] = React.useState("");
-  const [content, setContent] = React.useState("");
+  const [title, setTitle] = React.useState("")
+  const [content, setContent] = React.useState("")
 
   const { mutate: createPost, error } = api.post.create.useMutation({
     onSuccess: async () => {
-      setTitle("");
-      setContent("");
-      Keyboard.dismiss();
-      await utils.post.all.invalidate();
+      setTitle("")
+      setContent("")
+      Keyboard.dismiss()
+      await utils.post.all.invalidate()
     },
     onError: (error) => {
       if (error.data?.code === "UNAUTHORIZED")
-        Alert.alert("Error", "You must be logged in to create a post");
-    },
-  });
+        Alert.alert("Error", "You must be logged in to create a post")
+    }
+  })
 
   return (
     <KeyboardAvoidingView
@@ -118,8 +118,8 @@ function CreatePost() {
             onPress={() => {
               createPost({
                 title,
-                content,
-              });
+                content
+              })
             }}
           >
             <Text className="font-semibold text-zinc-900">Publish post</Text>
@@ -127,13 +127,13 @@ function CreatePost() {
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
-  );
+  )
 }
 
 export default function HomeScreen() {
-  const utils = api.useUtils();
+  const utils = api.useUtils()
 
-  const { data: posts } = api.post.all.useQuery();
+  const { data: posts } = api.post.all.useQuery()
 
   return (
     <SafeAreaView className="bg-zinc-900">
@@ -146,7 +146,7 @@ export default function HomeScreen() {
               <Text> x </Text>
               <Text className="text-emerald-400">Supabase</Text>
             </Text>
-          ),
+          )
         }}
       />
       <View className="h-full w-full p-4">
@@ -167,5 +167,5 @@ export default function HomeScreen() {
         <CreatePost />
       </View>
     </SafeAreaView>
-  );
+  )
 }

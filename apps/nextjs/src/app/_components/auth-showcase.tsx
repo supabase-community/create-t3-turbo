@@ -1,12 +1,12 @@
-import { cookies } from "next/headers";
-import Link from "next/link";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers"
+import Link from "next/link"
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 
-import { signOut } from "../auth/actions";
+import { signOut } from "../auth/actions"
 
 export async function AuthShowcase() {
-  const supabase = createServerComponentClient({ cookies });
-  const user = await supabase.auth.getUser();
+  const supabase = createServerComponentClient({ cookies })
+  const user = await supabase.auth.getUser()
 
   if (!user.data.user) {
     return (
@@ -16,7 +16,7 @@ export async function AuthShowcase() {
       >
         Sign in
       </Link>
-    );
+    )
   }
 
   return (
@@ -31,5 +31,5 @@ export async function AuthShowcase() {
         </button>
       </form>
     </div>
-  );
+  )
 }

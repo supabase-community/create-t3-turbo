@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import { useRouter } from "next/navigation";
-import { Github } from "lucide-react";
+import { useRouter } from "next/navigation"
+import { Github } from "lucide-react"
 
 import {
   signInWithGithub,
   signInWithGoogle,
   signInWithPassword,
-  signUp,
-} from "../actions";
+  signUp
+} from "../actions"
 
 export default function LoginPage() {
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <main className="flex h-screen items-center bg-zinc-900 text-zinc-200">
@@ -34,23 +34,23 @@ export default function LoginPage() {
           <button
             className="w-full rounded-lg bg-emerald-400 py-2 font-semibold text-zinc-900 no-underline transition hover:bg-emerald-500"
             formAction={async (formData) => {
-              const email = formData.get("email") as string;
-              const password = formData.get("password") as string;
+              const email = formData.get("email") as string
+              const password = formData.get("password") as string
 
-              const res = await signInWithPassword(email, password);
-              console.log("Sign in response", res);
-              router.push("/");
+              const res = await signInWithPassword(email, password)
+              console.log("Sign in response", res)
+              router.push("/")
             }}
           >
             Sign in
           </button>
           <button
             formAction={async (formData) => {
-              const email = formData.get("email") as string;
-              const password = formData.get("password") as string;
+              const email = formData.get("email") as string
+              const password = formData.get("password") as string
 
-              await signUp(email, password);
-              alert("Check your email for a confirmation link.");
+              await signUp(email, password)
+              alert("Check your email for a confirmation link.")
             }}
           >
             {`Don't have an account? Sign up.`}
@@ -76,5 +76,5 @@ export default function LoginPage() {
         </button>
       </div>
     </main>
-  );
+  )
 }

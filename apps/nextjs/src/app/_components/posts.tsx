@@ -1,39 +1,39 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import Image from "next/image";
+import { useState } from "react"
+import Image from "next/image"
 
-import type { RouterOutputs } from "@acme/api";
+import type { RouterOutputs } from "@acme/api"
 
-import { api } from "~/trpc/react";
+import { api } from "~/trpc/react"
 
 export function CreatePostForm() {
-  const utils = api.useUtils();
+  const utils = api.useUtils()
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState("")
+  const [content, setContent] = useState("")
 
   const { mutateAsync: createPost, error } = api.post.create.useMutation({
     async onSuccess() {
-      setTitle("");
-      setContent("");
-      await utils.post.all.invalidate();
-    },
-  });
+      setTitle("")
+      setContent("")
+      await utils.post.all.invalidate()
+    }
+  })
 
   return (
     <form
       className="flex w-full max-w-2xl flex-col"
       onSubmit={async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         try {
           await createPost({
             title,
-            content,
-          });
-          setTitle("");
-          setContent("");
-          await utils.post.all.invalidate();
+            content
+          })
+          setTitle("")
+          setContent("")
+          await utils.post.all.invalidate()
         } catch {
           // noop
         }
@@ -72,11 +72,11 @@ export function CreatePostForm() {
         <span className="mt-2 text-red-500">You must be logged in to post</span>
       )}
     </form>
-  );
+  )
 }
 
 export function PostList() {
-  const [posts] = api.post.all.useSuspenseQuery();
+  const [posts] = api.post.all.useSuspenseQuery()
 
   if (posts.length === 0) {
     return (
@@ -89,24 +89,24 @@ export function PostList() {
           <p className="text-2xl font-bold text-white">No posts yet</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
     <div className="flex w-full flex-col gap-4">
       {posts.map((p) => {
-        return <PostCard key={p.id} post={p} />;
+        return <PostCard key={p.id} post={p} />
       })}
     </div>
-  );
+  )
 }
 
 export function PostCard(props: {
-  post: RouterOutputs["post"]["all"][number];
+  post: RouterOutputs["post"]["all"][number]
 }) {
-  const utils = api.useUtils();
-  const deletePost = api.post.delete.useMutation();
-  const { post } = props;
+  const utils = api.useUtils()
+  const deletePost = api.post.delete.useMutation()
+  const { post } = props
 
   return (
     <div className="flex flex-row rounded-lg bg-white/10 p-4 transition-all hover:scale-[101%]">
@@ -125,19 +125,19 @@ export function PostCard(props: {
         <button
           className="cursor-pointer text-sm font-bold uppercase text-emerald-400"
           onClick={async () => {
-            await deletePost.mutateAsync(props.post.id);
-            await utils.post.all.invalidate();
+            await deletePost.mutateAsync(props.post.id)
+            await utils.post.all.invalidate()
           }}
         >
           Delete
         </button>
       </div>
     </div>
-  );
+  )
 }
 
 export function PostCardSkeleton(props: { pulse?: boolean }) {
-  const { pulse = true } = props;
+  const { pulse = true } = props
 
   return (
     <div className="flex flex-row rounded-lg bg-white/10 p-4 transition-all hover:scale-[101%]">
@@ -163,5 +163,5 @@ export function PostCardSkeleton(props: { pulse?: boolean }) {
         </p>
       </div>
     </div>
-  );
+  )
 }

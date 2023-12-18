@@ -1,12 +1,12 @@
-import type { ExpoConfig } from "@expo/config";
+import type { ExpoConfig } from "@expo/config"
 
 if (
   !process.env.EXPO_PUBLIC_SUPABASE_URL ||
   !process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY
 ) {
   throw new Error(
-    "Please provide SUPABASE_URL and SUPABASE_ANON_KEY in your .env file",
-  );
+    "Please provide SUPABASE_URL and SUPABASE_ANON_KEY in your .env file"
+  )
 }
 
 const defineConfig = (): ExpoConfig => ({
@@ -20,44 +20,34 @@ const defineConfig = (): ExpoConfig => ({
   splash: {
     image: "./assets/icon.png",
     resizeMode: "contain",
-    backgroundColor: "#18181A",
+    backgroundColor: "#18181A"
   },
   updates: {
-    fallbackToCacheTimeout: 0,
+    fallbackToCacheTimeout: 0
   },
   assetBundlePatterns: ["**/*"],
   ios: {
     bundleIdentifier: "circa",
     supportsTablet: true,
-    usesAppleSignIn: true,
+    usesAppleSignIn: true
   },
   android: {
     package: "circa",
     adaptiveIcon: {
       foregroundImage: "./assets/icon.png",
-      backgroundColor: "#18181A",
-    },
+      backgroundColor: "#18181A"
+    }
   },
   experiments: {
     tsconfigPaths: true,
-    typedRoutes: true,
+    typedRoutes: true
   },
   // extra: {
   //   eas: {
   //     projectId: "your-project-id",
   //   },
   // },
-  plugins: [
-    "./expo-plugins/with-modify-gradle.js",
-    "expo-apple-authentication",
-    [
-      "@react-native-google-signin/google-signin",
-      {
-        iosUrlScheme:
-          "com.googleusercontent.apps.706230225419-7tu57tu0jfk7760fuk5uijrkg7tn7pre",
-      },
-    ],
-  ],
-});
+  plugins: ["./expo-plugins/with-modify-gradle.js", "expo-apple-authentication"]
+})
 
-export default defineConfig;
+export default defineConfig
