@@ -1,8 +1,8 @@
+import { Text } from "react-native"
 import { Stack } from "expo-router"
 import { StatusBar } from "expo-status-bar"
 import { SessionContextProvider } from "@supabase/auth-helpers-react"
 
-import { HeaderBackButton, HeaderTitle } from "../components/header"
 import { TRPCProvider } from "../utils/api"
 import { supabase } from "../utils/supabase"
 
@@ -10,6 +10,8 @@ import "../styles.css"
 
 import { SafeAreaView } from "react-native-safe-area-context"
 import { cssInterop } from "nativewind"
+
+import { AuthAvatar } from "~/components/header"
 
 cssInterop(SafeAreaView, { className: "style" })
 
@@ -19,28 +21,21 @@ export default function RootLayout() {
   return (
     <SessionContextProvider supabaseClient={supabase}>
       <TRPCProvider>
-        {/*
-         * The Stack component displays the current page.
-         * It also allows you to configure your screens
-         */}
         <Stack
           screenOptions={{
-            headerLeft: HeaderBackButton,
-            headerTitle: HeaderTitle,
-            headerStyle: {
-              backgroundColor: "#18181A"
-            }
+            headerRight: () => <AuthAvatar />,
+            headerTitle: () => (
+              <Text className="text-3xl font-bold text-zinc-200">
+                <Text className="text-lime-500">dayone</Text>
+              </Text>
+            )
           }}
         >
-          {/*
-           * Present the profile screen as a modal
-           * @see https://expo.github.io/router/docs/guides/modals
-           */}
+          <Stack.Screen name="(tabs)" />
           <Stack.Screen
             name="profile"
             options={{
-              presentation: "modal",
-              headerTitle: () => <></>
+              presentation: "modal"
             }}
           />
         </Stack>
