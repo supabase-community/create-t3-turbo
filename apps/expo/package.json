@@ -1,5 +1,5 @@
 {
-  "name": "@acme/expo",
+  "name": "@dayone/expo",
   "version": "0.1.0",
   "private": true,
   "main": "expo-router/entry",
@@ -46,11 +46,11 @@
     "superjson": "2.2.1"
   },
   "devDependencies": {
-    "@acme/api": "workspace:^0.1.0",
-    "@acme/eslint-config": "workspace:^0.2.0",
-    "@acme/prettier-config": "workspace:^0.1.0",
-    "@acme/tailwind-config": "workspace:^0.1.0",
-    "@acme/tsconfig": "workspace:^0.1.0",
+    "@dayone/api": "workspace:^0.1.0",
+    "@dayone/eslint-config": "workspace:^0.2.0",
+    "@dayone/prettier-config": "workspace:^0.1.0",
+    "@dayone/tailwind-config": "workspace:^0.1.0",
+    "@dayone/tsconfig": "workspace:^0.1.0",
     "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.23.2",
     "@babel/runtime": "^7.23.2",
@@ -65,8 +65,8 @@
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@acme/eslint-config/base",
-      "@acme/eslint-config/react"
+      "@dayone/eslint-config/base",
+      "@dayone/eslint-config/react"
     ],
     "ignorePatterns": [
       "expo-plugins/**"
@@ -75,5 +75,5 @@
       "jsx-a11y/alt-text": "off"
     }
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@dayone/prettier-config"
 }

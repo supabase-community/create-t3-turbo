@@ -1,8 +1,7 @@
+import { desc, eq, schema } from "@dayone/db"
 import { TRPCError } from "@trpc/server"
 import { nanoid } from "nanoid"
 import { z } from "zod"
-
-import { desc, eq, schema } from "@acme/db"
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc"
 

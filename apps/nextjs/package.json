@@ -1,5 +1,5 @@
 {
-  "name": "@acme/nextjs",
+  "name": "@dayone/nextjs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,8 +13,8 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@acme/api": "workspace:^0.1.0",
-    "@acme/db": "workspace:^0.1.0",
+    "@dayone/api": "workspace:^0.1.0",
+    "@dayone/db": "workspace:^0.1.0",
     "@supabase/auth-helpers-nextjs": "^0.8.7",
     "@supabase/supabase-js": "^2.39.0",
     "@t3-oss/env-nextjs": "^0.7.1",
@@ -33,10 +33,10 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:^0.2.0",
-    "@acme/prettier-config": "workspace:^0.1.0",
-    "@acme/tailwind-config": "workspace:^0.1.0",
-    "@acme/tsconfig": "workspace:^0.1.0",
+    "@dayone/eslint-config": "workspace:^0.2.0",
+    "@dayone/prettier-config": "workspace:^0.1.0",
+    "@dayone/tailwind-config": "workspace:^0.1.0",
+    "@dayone/tsconfig": "workspace:^0.1.0",
     "@types/node": "^18.18.13",
     "@types/react": "^18.2.42",
     "@types/react-dom": "^18.2.17",
@@ -49,10 +49,10 @@
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@acme/eslint-config/base",
-      "@acme/eslint-config/nextjs",
-      "@acme/eslint-config/react"
+      "@dayone/eslint-config/base",
+      "@dayone/eslint-config/nextjs",
+      "@dayone/eslint-config/react"
     ]
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@dayone/prettier-config"
 }

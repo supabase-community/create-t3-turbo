@@ -1,5 +1,5 @@
 {
-  "name": "@acme/api",
+  "name": "@dayone/api",
   "version": "0.1.0",
   "private": true,
   "main": "./index.ts",
@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@acme/db": "workspace:^0.1.0",
+    "@dayone/db": "workspace:^0.1.0",
     "@supabase/supabase-js": "^2.39.0",
     "@trpc/client": "next",
     "@trpc/server": "next",
@@ -21,9 +21,9 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:^0.2.0",
-    "@acme/prettier-config": "workspace:^0.1.0",
-    "@acme/tsconfig": "workspace:^0.1.0",
+    "@dayone/eslint-config": "workspace:^0.2.0",
+    "@dayone/prettier-config": "workspace:^0.1.0",
+    "@dayone/tsconfig": "workspace:^0.1.0",
     "eslint": "^8.53.0",
     "prettier": "^3.1.0",
     "typescript": "^5.3.3"
@@ -31,8 +31,8 @@
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@acme/eslint-config/base"
+      "@dayone/eslint-config/base"
     ]
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@dayone/prettier-config"
 }

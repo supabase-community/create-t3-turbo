@@ -1,9 +1,8 @@
 "use client"
 
+import type { RouterOutputs } from "@dayone/api"
 import { useState } from "react"
 import Image from "next/image"
-
-import type { RouterOutputs } from "@acme/api"
 
 import { api } from "~/trpc/react"
 

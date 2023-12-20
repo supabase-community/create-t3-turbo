@@ -10,8 +10,8 @@ if (
 }
 
 const defineConfig = (): ExpoConfig => ({
-  name: "circa",
-  slug: "circa",
+  name: "dayone",
+  slug: "dayone",
   scheme: "expo",
   version: "2.0.0",
   orientation: "portrait",
@@ -27,12 +27,12 @@ const defineConfig = (): ExpoConfig => ({
   },
   assetBundlePatterns: ["**/*"],
   ios: {
-    bundleIdentifier: "circa",
+    bundleIdentifier: "dayone",
     supportsTablet: true,
     usesAppleSignIn: true
   },
   android: {
-    package: "circa",
+    package: "dayone",
     adaptiveIcon: {
       foregroundImage: "./assets/icon.png",
       backgroundColor: "#18181A"
