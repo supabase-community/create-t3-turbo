@@ -15,9 +15,9 @@ import { Image } from "expo-image";
 import { Link, Stack } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 
-import type { RouterOutputs } from "../utils/api";
-import { AuthAvatar } from "../components/header";
-import { api } from "../utils/api";
+import type { RouterOutputs } from "~/utils/api";
+import { AuthAvatar } from "~/components/header";
+import { api } from "~/utils/api";
 
 function PostCard(props: { post: RouterOutputs["post"]["all"][number] }) {
   const { post } = props;
@@ -33,7 +33,7 @@ function PostCard(props: { post: RouterOutputs["post"]["all"][number] }) {
   });
 
   return (
-    <View className="flex flex-row rounded-lg bg-white/10 p-4">
+    <View className="flex flex-row rounded-lg bg-muted p-4">
       <View className="flex-grow">
         <Link
           asChild
@@ -45,13 +45,13 @@ function PostCard(props: { post: RouterOutputs["post"]["all"][number] }) {
           <Pressable>
             <Image
               className="mr-2 h-10 w-10 self-center rounded-full"
-              source={post.author?.image ?? ""}
+              source={post.author.image ?? ""}
             />
             <View>
               <Text className="text-xl font-semibold text-emerald-400">
                 {post.title}
               </Text>
-              <Text className="mt-2 text-zinc-200">{post.content}</Text>
+              <Text className="mt-2 text-foreground">{post.content}</Text>
             </View>
           </Pressable>
         </Link>
@@ -90,7 +90,7 @@ function CreatePost() {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} className="flex-1">
         <View className="mt-4 justify-around">
           <TextInput
-            className="mb-2 rounded bg-white/10 p-2 text-zinc-200"
+            className="mb-2 rounded bg-background p-2 text-zinc-200"
             placeholderTextColor="#A1A1A9" // zinc-400
             value={title}
             onChangeText={setTitle}
@@ -102,14 +102,14 @@ function CreatePost() {
             </Text>
           )}
           <TextInput
-            className="mb-2 rounded bg-white/10 p-2 text-zinc-200"
+            className="mb-2 rounded bg-background p-2 text-zinc-200"
             placeholderTextColor="#A1A1A9" // zinc-400
             value={content}
             onChangeText={setContent}
             placeholder="Content"
           />
           {error?.data?.zodError?.fieldErrors.content && (
-            <Text className="mb-2 text-red-500">
+            <Text className="mb-2 text-destructive">
               {error.data.zodError.fieldErrors.content}
             </Text>
           )}
@@ -122,7 +122,7 @@ function CreatePost() {
               });
             }}
           >
-            <Text className="font-semibold text-zinc-900">Publish post</Text>
+            <Text className="font-semibold text-foreground">Publish post</Text>
           </Pressable>
         </View>
       </TouchableWithoutFeedback>
@@ -133,10 +133,10 @@ function CreatePost() {
 export default function HomeScreen() {
   const utils = api.useUtils();
 
-  const { data: posts } = api.post.all.useQuery();
+  const postQuery = api.post.all.useQuery();
 
   return (
-    <SafeAreaView className="bg-zinc-900">
+    <SafeAreaView className="bg-background">
       <Stack.Screen
         options={{
           headerLeft: () => <AuthAvatar />,
@@ -149,16 +149,22 @@ export default function HomeScreen() {
           ),
         }}
       />
-      <View className="h-full w-full p-4">
+      <View className="h-full w-full bg-background p-4">
         <Pressable
           className="my-4 rounded bg-emerald-400 p-2"
           onPress={() => void utils.post.all.invalidate()}
         >
-          <Text className="font-semibold text-zinc-900">Refresh posts</Text>
+          <Text className="font-semibold text-foreground">Refresh posts</Text>
         </Pressable>
 
+        <View className="py-2">
+          <Text className="font-semibold italic text-primary">
+            Press on a post
+          </Text>
+        </View>
+
         <FlashList
-          data={posts}
+          data={postQuery.data}
           estimatedItemSize={20}
           ItemSeparatorComponent={() => <View className="h-2" />}
           renderItem={(p) => <PostCard post={p.item} />}

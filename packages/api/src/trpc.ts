@@ -11,7 +11,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { db } from "@acme/db";
+import { db } from "@acme/db/client";
 
 /**
  * 1. CONTEXT
@@ -40,7 +40,7 @@ export const createTRPCContext = async (opts: {
     : await supabase.auth.getUser();
 
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
-  console.log(">>> tRPC Request from", source, "by", user?.data.user?.email);
+  console.log(">>> tRPC Request from", source, "by", user.data.user?.email);
 
   return {
     user: user.data.user,
@@ -56,17 +56,20 @@ export const createTRPCContext = async (opts: {
  */
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
-  errorFormatter({ shape, error }) {
-    return {
-      ...shape,
-      data: {
-        ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
-      },
-    };
-  },
+  errorFormatter: ({ shape, error }) => ({
+    ...shape,
+    data: {
+      ...shape.data,
+      zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
+    },
+  }),
 });
+
+/**
+ * Create a server-side caller
+ * @see https://trpc.io/docs/server/server-side-calls
+ */
+export const createCallerFactory = t.createCallerFactory;
 
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
@@ -91,10 +94,14 @@ export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
 
 /**
- * Reusable middleware that enforces users are logged in before running the
- * procedure
+ * Protected (authenticated) procedure
+ *
+ * If you want a query or mutation to ONLY be accessible to logged in users, use this. It verifies
+ * the session is valid and guarantees `ctx.session.user` is not null.
+ *
+ * @see https://trpc.io/docs/procedures
  */
-const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
   if (!ctx.user?.id) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
@@ -105,14 +112,3 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
     },
   });
 });
-
-/**
- * Protected (authed) procedure
- *
- * If you want a query or mutation to ONLY be accessible to logged in users, use
- * this. It verifies the session is valid and guarantees ctx.session.user is not
- * null
- *
- * @see https://trpc.io/docs/procedures
- */
-export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);

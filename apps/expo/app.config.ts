@@ -1,22 +1,14 @@
-import type { ExpoConfig } from "@expo/config";
+import type { ConfigContext, ExpoConfig } from "@expo/config";
 
-if (
-  !process.env.EXPO_PUBLIC_SUPABASE_URL ||
-  !process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY
-) {
-  throw new Error(
-    "Please provide SUPABASE_URL and SUPABASE_ANON_KEY in your .env file",
-  );
-}
-
-const defineConfig = (): ExpoConfig => ({
+export default ({ config }: ConfigContext): ExpoConfig => ({
+  ...config,
   name: "expo",
   slug: "expo",
   scheme: "expo",
-  version: "2.0.0",
+  version: "0.1.0",
   orientation: "portrait",
   icon: "./assets/icon.png",
-  userInterfaceStyle: "dark",
+  userInterfaceStyle: "automatic",
   splash: {
     image: "./assets/icon.png",
     resizeMode: "contain",
@@ -30,6 +22,9 @@ const defineConfig = (): ExpoConfig => ({
     bundleIdentifier: "your.bundle.identifier",
     supportsTablet: true,
     usesAppleSignIn: true,
+    config: {
+      usesNonExemptEncryption: false,
+    },
   },
   android: {
     package: "your.bundle.identifier",
@@ -47,10 +42,5 @@ const defineConfig = (): ExpoConfig => ({
   //     projectId: "your-project-id",
   //   },
   // },
-  plugins: [
-    "./expo-plugins/with-modify-gradle.js",
-    "expo-apple-authentication",
-  ],
+  plugins: ["expo-router", "expo-secure-store", "expo-apple-authentication"],
 });
-
-export default defineConfig;

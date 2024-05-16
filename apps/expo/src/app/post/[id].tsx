@@ -6,18 +6,18 @@ import { api } from "~/utils/api";
 export default function Post() {
   const { id } = useGlobalSearchParams();
   if (!id || typeof id !== "string") throw new Error("unreachable");
-  const { data: post } = api.post.byId.useQuery({ id });
+  const { data } = api.post.byId.useQuery({ id });
 
-  if (!post) return null;
+  if (!data) return null;
 
   return (
-    <SafeAreaView className="bg-zinc-900">
-      <Stack.Screen options={{ title: post.title }} />
+    <SafeAreaView className="bg-background">
+      <Stack.Screen options={{ title: data.title }} />
       <View className="h-full w-full p-4">
-        <Text className="py-2 text-3xl font-bold text-zinc-200">
-          {post.title}
+        <Text className="py-2 text-3xl font-bold text-primary">
+          {data.title}
         </Text>
-        <Text className="py-4 text-zinc-200">{post?.content}</Text>
+        <Text className="py-4 text-foreground">{data.content}</Text>
       </View>
     </SafeAreaView>
   );

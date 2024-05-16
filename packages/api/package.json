@@ -2,37 +2,38 @@
   "name": "@acme/api",
   "version": "0.1.0",
   "private": true,
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    }
+  },
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
     "clean": "rm -rf .turbo node_modules",
-    "lint": "eslint .",
     "format": "prettier --check . --ignore-path ../../.gitignore",
-    "typecheck": "tsc --noEmit"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "@acme/db": "workspace:^0.1.0",
-    "@supabase/supabase-js": "^2.39.0",
-    "@trpc/client": "next",
-    "@trpc/server": "next",
-    "nanoid": "^5.0.4",
+    "@acme/db": "workspace:*",
+    "@acme/validators": "workspace:*",
+    "@supabase/supabase-js": "^2.43.1",
+    "@trpc/server": "11.0.0-rc.364",
+    "nanoid": "^5.0.7",
     "superjson": "2.2.1",
-    "zod": "^3.22.2"
+    "zod": "^3.23.6"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:^0.2.0",
-    "@acme/prettier-config": "workspace:^0.1.0",
-    "@acme/tsconfig": "workspace:^0.1.0",
-    "eslint": "^8.53.0",
-    "prettier": "^3.1.0",
-    "typescript": "^5.3.3"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@acme/eslint-config/base"
-    ]
+    "@acme/eslint-config": "workspace:*",
+    "@acme/prettier-config": "workspace:*",
+    "@acme/tsconfig": "workspace:*",
+    "eslint": "^9.2.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
   },
   "prettier": "@acme/prettier-config"
 }

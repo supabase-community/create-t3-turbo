@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as SecureStore from "expo-secure-store";
 import { createClient } from "@supabase/supabase-js";
 

@@ -4,7 +4,7 @@ import * as AppleAuthentication from "expo-apple-authentication";
 import { AntDesign } from "@expo/vector-icons";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 
-import { initiateAppleSignIn } from "../utils/auth";
+import { initiateAppleSignIn } from "~/utils/auth";
 
 export default function Profile() {
   const user = useUser();

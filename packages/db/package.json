@@ -2,35 +2,52 @@
   "name": "@acme/db",
   "version": "0.1.0",
   "private": true,
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "default": "./src/client.ts"
+    },
+    "./schema": {
+      "types": "./dist/schema/index.d.ts",
+      "default": "./src/schema/index.ts"
+    }
+  },
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
     "clean": "rm -rf .turbo node_modules",
-    "lint": "eslint .",
     "format": "prettier --check . --ignore-path ../../.gitignore",
-    "push": "drizzle-kit push:pg",
-    "typecheck": "tsc --noEmit"
+    "lint": "eslint",
+    "generate": "pnpm with-env drizzle-kit generate",
+    "migrate": "pnpm with-env drizzle-kit migrate",
+    "migrate:script": "pnpm with-env tsx src/migrate.ts",
+    "push": "pnpm with-env drizzle-kit push",
+    "studio": "pnpm with-env drizzle-kit studio",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@vercel/postgres": "^0.5.1",
-    "drizzle-orm": "^0.29.1"
+    "@vercel/postgres": "^0.8.0",
+    "drizzle-orm": "^0.30.10",
+    "drizzle-zod": "^0.5.1",
+    "pg": "^8.11.5"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:^0.2.0",
-    "@acme/prettier-config": "workspace:^0.1.0",
-    "@acme/tsconfig": "workspace:^0.1.0",
-    "dotenv-cli": "^7.3.0",
-    "drizzle-kit": "beta",
-    "eslint": "^8.53.0",
-    "prettier": "^3.1.0",
-    "typescript": "^5.3.3"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@acme/eslint-config/base"
-    ]
+    "@acme/eslint-config": "workspace:*",
+    "@acme/prettier-config": "workspace:*",
+    "@acme/tsconfig": "workspace:*",
+    "dotenv-cli": "^7.4.1",
+    "drizzle-kit": "^0.21.2",
+    "eslint": "^9.2.0",
+    "prettier": "^3.2.5",
+    "tsx": "^4.9.3",
+    "typescript": "^5.4.5"
   },
   "prettier": "@acme/prettier-config"
 }

@@ -1,44 +1,64 @@
 "use server";
 
-import { cookies, headers } from "next/headers";
+import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 
-export const signInWithPassword = async (email: string, password: string) => {
-  const supabase = createServerActionClient({ cookies });
+import { SignInSchema, SignUpSchema } from "@acme/validators";
 
-  const { error, data } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+import { DEFAULT_LOGIN_REDIRECT } from "~/config/routes";
+import { action } from "~/lib/safe-action";
+import { createClient } from "~/utils/supabase/server";
 
-  if (error) throw error;
-  return data.user;
-};
+export const signInWithPassword = action(
+  SignInSchema,
+  async ({ email, password }) => {
+    const supabase = createClient();
 
-export const signUp = async (email: string, password: string) => {
-  const supabase = createServerActionClient({ cookies });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) throw error;
+
+    revalidatePath("/", "layout");
+    redirect(DEFAULT_LOGIN_REDIRECT);
+  },
+);
+
+export const signUp = action(SignUpSchema, async ({ email, password }) => {
   const origin = headers().get("origin");
+  const supabase = createClient();
+
+  const redirectUrl = `${origin}/auth/confirm?next=${encodeURIComponent(DEFAULT_LOGIN_REDIRECT)}`;
 
   const { error, data } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo: `${origin}/auth/callback`,
+      emailRedirectTo: redirectUrl,
     },
   });
 
+  // User already exists, so fake data is returned. See https://supabase.com/docs/reference/javascript/auth-signup
+  if (data.user?.identities && data.user.identities.length === 0) {
+    throw new Error("An error occurred. Please try again.");
+  }
+
   if (error) throw error;
   return data.user;
-};
+});
 
 export const signInWithGithub = async () => {
   const origin = headers().get("origin");
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createClient();
+
+  const redirectUrl = `${origin}/auth/callback?next=${encodeURIComponent(DEFAULT_LOGIN_REDIRECT)}`;
 
   const res = await supabase.auth.signInWithOAuth({
     provider: "github",
-    options: { redirectTo: `${origin}/auth/callback` },
+    options: { redirectTo: redirectUrl },
   });
 
   if (res.data.url) redirect(res.data.url);
@@ -46,7 +66,7 @@ export const signInWithGithub = async () => {
 };
 
 export const signOut = async () => {
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createClient();
   await supabase.auth.signOut();
   redirect("/");
 };

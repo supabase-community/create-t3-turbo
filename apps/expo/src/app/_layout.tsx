@@ -1,21 +1,20 @@
+import "@bacons/text-decoder/install";
+
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { useColorScheme } from "nativewind";
 
-import { HeaderBackButton, HeaderTitle } from "../components/header";
-import { TRPCProvider } from "../utils/api";
-import { supabase } from "../utils/supabase";
+import { HeaderBackButton, HeaderTitle } from "~/components/header";
+import { TRPCProvider } from "~/utils/api";
+import { supabase } from "~/utils/supabase";
 
 import "../styles.css";
-
-import { SafeAreaView } from "react-native-safe-area-context";
-import { cssInterop } from "nativewind";
-
-cssInterop(SafeAreaView, { className: "style" });
 
 // This is the main layout of the app
 // It wraps your pages with the providers they need
 export default function RootLayout() {
+  const { colorScheme } = useColorScheme();
   return (
     <SessionContextProvider supabaseClient={supabase}>
       <TRPCProvider>
@@ -29,6 +28,9 @@ export default function RootLayout() {
             headerTitle: HeaderTitle,
             headerStyle: {
               backgroundColor: "#18181A",
+            },
+            contentStyle: {
+              backgroundColor: colorScheme == "dark" ? "#09090B" : "#FFFFFF",
             },
           }}
         >
